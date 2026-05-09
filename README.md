@@ -171,7 +171,7 @@ npm run lint         # ESLint
 - [x] Providers (QueryClient, Router)
 - [x] Type definitions
 - [x] Mock data & service interfaces
-- [ ] Layout shell (Sidebar, TopHeader)
+- [x] Layout shell (Sidebar, TopHeader)
 - [ ] Dashboard page
 - [ ] Analytics page
 - [ ] Alerts page
