@@ -172,7 +172,7 @@ npm run lint         # ESLint
 - [x] Type definitions
 - [x] Mock data & service interfaces
 - [x] Layout shell (Sidebar, TopHeader)
-- [ ] Dashboard page
+- [x] Dashboard page
 - [ ] Analytics page
 - [ ] Alerts page
 - [ ] Reports page

@@ -1,2 +1,5 @@
-export { SystemOverviewBar } from './components/SystemOverviewBar'
+export { SystemOverviewBar }   from './components/SystemOverviewBar'
 export { EngineHealthOverview } from './components/EngineHealthCard'
+export { TrendAnalysisChart }  from './components/TrendAnalysisChart'
+export { SystemFlowDiagram }   from './components/SystemFlowDiagram'
+export { RecommendedActions }  from './components/RecommendedActions'
