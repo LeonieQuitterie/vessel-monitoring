@@ -1,1 +1,43 @@
 @import "tailwindcss";
+
+:root {
+    /* Background layers */
+    --bg-base: #0a1628;
+    --bg-surface: #0f2044;
+    --bg-card: #132952;
+    --bg-card-hover: #1a3566;
+    --bg-border: #1e4080;
+
+    /* Accent */
+    --accent-cyan: #22d3ee;
+    --accent-blue: #3b82f6;
+    --accent-teal: #14b8a6;
+
+    /* Status */
+    --status-ok: #22c55e;
+    --status-warn: #f59e0b;
+    --status-danger: #ef4444;
+    --status-info: #60a5fa;
+
+    /* Text */
+    --text-primary: #e2f0ff;
+    --text-secondary: #7eb3d8;
+    --text-muted: #4a7aaa;
+
+    /* Chart lines */
+    --chart-temp: #22d3ee;
+    --chart-vibration: #eab308;
+    --chart-humidity: #22c55e;
+    --chart-power: #a855f7;
+}
+
+body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: 'Outfit', sans-serif;
+}
+
+/* Numbers, timestamps, sensor values */
+.font-mono {
+    font-family: 'JetBrains Mono', monospace;
+}
