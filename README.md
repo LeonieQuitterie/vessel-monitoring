@@ -1,73 +1,195 @@
-# React + TypeScript + Vite
+# Vessel Monitoring System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Real-time Monitoring · Smart Analytics · Predictive Alerts
 
-Currently, two official plugins are available:
+> A modern React dashboard for vessel health monitoring, anomaly detection, and maintenance management — built for **Sea Sense Technologies**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Screenshots
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+> _(Add screenshots here after UI is built)_
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| Layer | Tool | Version |
+|---|---|---|
+| Build Tool | Vite | ^6.x |
+| Language | TypeScript | ^5.x |
+| UI Framework | React | ^18.x |
+| Styling | Tailwind CSS | ^4.x |
+| Server State | TanStack Query | ^5.x |
+| Client State | Zustand | ^5.x |
+| Routing | React Router | ^7.x |
+| Forms | React Hook Form + Zod | ^7.x / ^3.x |
+| Charts | Recharts | ^2.x |
+| Icons | Lucide React | latest |
+| HTTP Client | Axios | ^1.x |
+| Testing | Vitest + React Testing Library | latest |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Project Structure
+
+```
+src/
+├── app/                        # App-level setup (Router, Providers)
+├── features/                   # Feature modules
+│   ├── dashboard/
+│   ├── analytics/
+│   ├── alerts/
+│   ├── reports/
+│   └── settings/
+├── shared/                     # Shared across features
+│   ├── components/ui/          # Reusable UI atoms (Badge, Card, Button...)
+│   ├── components/layout/      # AppShell, Sidebar, TopHeader
+│   ├── hooks/                  # Generic hooks
+│   ├── utils/                  # Pure utility functions
+│   ├── types/                  # Global TypeScript types
+│   └── constants/              # App-wide constants
+├── services/                   # Data layer
+│   ├── interfaces/             # Service contracts (IAlertService...)
+│   ├── mock/                   # Mock data + implementations
+│   └── api/                    # Real API implementations (future)
+└── store/                      # Zustand global stores
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Each feature follows this internal structure:
 ```
+features/alerts/
+├── components/     # Dumb UI components
+├── hooks/          # Data hooks (useAlerts, useAlertActions...)
+├── types/          # Feature-specific types
+├── utils/          # Feature-specific helpers
+└── index.ts        # Public API of this feature
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js >= 18.x
+- npm >= 9.x
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/LeonieQuitterie/vessel-monitoring.git
+cd vessel-monitoring
+
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env.development` file in the root:
+
+```env
+VITE_USE_MOCK=true
+VITE_API_BASE_URL=http://localhost:3000
+```
+
+For production:
+
+```env
+VITE_USE_MOCK=false
+VITE_API_BASE_URL=https://api.seasense.com
+```
+
+> **To switch from mock data to real API:** change `VITE_USE_MOCK` to `false`. No component code changes needed.
+
+---
+
+## 🗂️ Pages
+
+| Route | Page | Status |
+|---|---|---|
+| `/` | Dashboard | 🚧 In progress |
+| `/analytics` | Analytics | 🚧 In progress |
+| `/alerts` | Alerts | 🚧 In progress |
+| `/reports` | Reports | 🚧 In progress |
+| `/settings` | Settings | 🚧 In progress |
+
+---
+
+## 🏗️ Architecture Decisions
+
+### Mock → Real API with zero UI changes
+
+All data access goes through a service interface:
+
+```
+Component → Hook → IService → MockService | ApiService
+```
+
+- `VITE_USE_MOCK=true` → uses `MockAlertService`
+- `VITE_USE_MOCK=false` → uses `ApiAlertService`
+- Components and hooks are **completely unaware** of the data source
+
+### State Management
+
+- **TanStack Query** — server/async state (data fetching, caching, background sync)
+- **Zustand** — client/UI state (selected item, filters, modal open/close)
+- Rule: never mix the two
+
+### Feature-Based Architecture
+
+Each feature is self-contained. Deleting a feature = deleting one folder. Cross-feature shared code lives in `shared/`.
+
+---
+
+## 📝 Available Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run test         # Run tests with Vitest
+npm run type-check   # TypeScript type checking
+npm run lint         # ESLint
+```
+
+---
+
+## 🛣️ Roadmap
+
+- [x] Project setup & architecture
+- [x] Folder structure & path aliases
+- [x] Providers (QueryClient, Router)
+- [ ] Type definitions
+- [ ] Mock data & service interfaces
+- [ ] Layout shell (Sidebar, TopHeader)
+- [ ] Dashboard page
+- [ ] Analytics page
+- [ ] Alerts page
+- [ ] Reports page
+- [ ] Settings page
+- [ ] Backend API integration (MySQL)
+- [ ] Authentication
+
+---
+
+## 🤝 Contributing
+
+1. Create a feature branch: `git checkout -b feat/your-feature`
+2. Commit with convention: `feat:`, `fix:`, `chore:`, `docs:`
+3. Push and open a Pull Request
+
+---
+
+## 📄 License
+
+Private project — Sea Sense Technologies © 2024
