@@ -17,6 +17,10 @@ import {
     ReportHeaderBar, ReportLibraryTable, MaintenanceSchedule,
     MonthlyTrendChart, ReportPreviewPanel,
 } from '@/features/reports'
+import {
+    SettingsHeaderBar, DeviceConfiguration, AlertThresholds,
+    NotificationSettings, AccessControl, SystemPreferencesPanel, SystemActions,
+} from '@/features/settings'
 import { useAlertStore } from '@/store/useAlertStore'
 
 const DashboardPage = () => (
@@ -73,8 +77,6 @@ const ReportsPage = () => {
     return (
         <div className="flex flex-col gap-4">
             <ReportHeaderBar />
-
-            {/* Row 2: Table + Maintenance */}
             <div className="grid grid-cols-3 gap-4">
                 <div className="col-span-2">
                     <ReportLibraryTable selectedId={selectedId} onSelect={setSelectedId} />
@@ -83,15 +85,51 @@ const ReportsPage = () => {
                     <MaintenanceSchedule />
                 </div>
             </div>
-
-            {/* Row 3: Monthly Trend — full width */}
             <MonthlyTrendChart />
-
-            {/* Row 4: Preview + Export */}
             <ReportPreviewPanel selectedId={selectedId} />
         </div>
     )
 }
+
+const SettingsPage = () => (
+    <div className="flex flex-col gap-4">
+        <SettingsHeaderBar />
+
+        {/* Row 2: 3 cột — stretch equal height */}
+        <div className="grid grid-cols-3 gap-4 items-stretch">
+            <div className="col-span-1 flex flex-col">
+                <DeviceConfiguration />
+            </div>
+            <div className="col-span-1 flex flex-col">
+                <AlertThresholds />
+            </div>
+            <div className="col-span-1 flex flex-col gap-4">
+                <NotificationSettings />
+                <SystemActions />
+            </div>
+        </div>
+
+        {/* Row 3: 2 cột — stretch equal height */}
+        <div className="grid grid-cols-3 gap-4 items-stretch">
+            <div className="col-span-1 flex flex-col">
+                <AccessControl />
+            </div>
+            <div className="col-span-2 flex flex-col">
+                <SystemPreferencesPanel />
+            </div>
+        </div>
+
+        {/* Footer */}
+        <div className="flex justify-end gap-3 pb-2">
+            <button className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[var(--bg-border)] text-[11px] font-semibold text-[var(--text-secondary)] hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)] transition-all">
+                ↺ Reset Defaults
+            </button>
+            <button className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[var(--accent-cyan)] text-[var(--bg-base)] text-[11px] font-bold hover:opacity-90 transition-opacity">
+                ✓ Save Changes
+            </button>
+        </div>
+    </div>
+)
 
 export const router = createBrowserRouter([
     {
@@ -102,7 +140,7 @@ export const router = createBrowserRouter([
             { path: 'analytics', element: <AnalyticsPage /> },
             { path: 'alerts', element: <AlertsPage /> },
             { path: 'reports', element: <ReportsPage /> },
-            { path: 'settings', element: <div className="text-[var(--text-primary)] p-4">Settings — coming soon</div> },
+            { path: 'settings', element: <SettingsPage /> },
         ],
     },
 ])
