@@ -175,8 +175,8 @@ npm run lint         # ESLint
 - [x] Dashboard page
 - [x] Analytics page
 - [x] Alerts page
-- [ ] Reports page
-- [ ] Settings page
+- [x] Reports page
+- [x] Settings page
 - [ ] Backend API integration (MySQL)
 - [ ] Authentication
 
