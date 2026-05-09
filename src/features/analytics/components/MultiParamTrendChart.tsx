@@ -1,0 +1,124 @@
+import { useState } from 'react'
+import {
+    LineChart, Line, XAxis, YAxis, Tooltip,
+    ResponsiveContainer, CartesianGrid, Legend,
+} from 'recharts'
+import { Calendar } from 'lucide-react'
+import { Card } from '@/shared/components/ui/Card'
+import { useAnalyticsTrend } from '../hooks/useAnalytics'
+import type { TimeRange } from '@/shared/types/common.types'
+
+const timeRanges: TimeRange[] = ['1H', '6H', '12H', '24H', '7D']
+
+const lines = [
+    { key: 'temperature', label: 'Temperature (°C)', color: 'var(--chart-temp)' },
+    { key: 'vibration', label: 'Vibration (g)', color: 'var(--chart-vibration)' },
+    { key: 'humidity', label: 'Humidity (%)', color: 'var(--chart-humidity)' },
+    { key: 'power', label: 'Power (kW)', color: 'var(--chart-power)' },
+]
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+    if (!active || !payload?.length) return null
+    return (
+        <div className="rounded-lg border border-[var(--bg-border)] bg-[var(--bg-surface)] p-2.5 text-[10px] shadow-xl">
+            <p className="text-[var(--text-muted)] mb-1.5 font-mono">{label}</p>
+            {payload.map((p: any) => (
+                <p key={p.dataKey} className="font-mono" style={{ color: p.color }}>
+                    {p.name}: {typeof p.value === 'number' ? p.value.toFixed(2) : p.value}
+                </p>
+            ))}
+        </div>
+    )
+}
+
+export const MultiParamTrendChart = () => {
+    const [activeRange, setActiveRange] = useState<TimeRange>('24H')
+    const { data, isLoading } = useAnalyticsTrend(activeRange)
+
+    const chartData = data?.map(d => ({
+        ...d,
+        time: new Date(d.timestamp).toLocaleTimeString('en', {
+            hour: '2-digit', minute: '2-digit', hour12: false,
+        }),
+    })) ?? []
+
+    return (
+        <Card className="flex flex-col gap-3">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded flex items-center justify-center bg-[var(--accent-cyan)] bg-opacity-20 text-[10px] font-bold text-[var(--accent-cyan)]">
+                        1
+                    </span>
+                    <h2 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest">
+                        Multi-Parameter Trend Analysis
+                    </h2>
+                </div>
+
+                <div className="flex items-center gap-1">
+                    {timeRanges.map(r => (
+                        <button
+                            key={r}
+                            onClick={() => setActiveRange(r)}
+                            className={[
+                                'px-2.5 py-1 rounded text-[10px] font-semibold transition-all',
+                                activeRange === r
+                                    ? 'bg-[var(--accent-cyan)] text-[var(--bg-base)]'
+                                    : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]',
+                            ].join(' ')}
+                        >
+                            {r}
+                        </button>
+                    ))}
+                    <Calendar className="w-4 h-4 text-[var(--text-muted)] ml-1" />
+                </div>
+            </div>
+
+            {/* Legend */}
+            <div className="flex items-center gap-4 flex-wrap">
+                {lines.map(({ key, label, color }) => (
+                    <div key={key} className="flex items-center gap-1.5">
+                        <span className="w-6 h-0.5 rounded" style={{ backgroundColor: color }} />
+                        <span className="text-[10px] text-[var(--text-muted)]">{label}</span>
+                    </div>
+                ))}
+            </div>
+
+            {/* Chart */}
+            {isLoading ? (
+                <div className="h-56 rounded-lg bg-[var(--bg-surface)] animate-pulse" />
+            ) : (
+                <ResponsiveContainer width="100%" height={220}>
+                    <LineChart data={chartData} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--bg-border)" vertical={false} />
+                        <XAxis
+                            dataKey="time"
+                            tick={{ fontSize: 9, fill: 'var(--text-muted)' }}
+                            tickLine={false}
+                            axisLine={false}
+                            interval="preserveStartEnd"
+                        />
+                        <YAxis
+                            tick={{ fontSize: 9, fill: 'var(--text-muted)' }}
+                            tickLine={false}
+                            axisLine={false}
+                        />
+                        <Tooltip content={<CustomTooltip />} />
+                        {lines.map(({ key, label, color }) => (
+                            <Line
+                                key={key}
+                                type="monotone"
+                                dataKey={key}
+                                stroke={color}
+                                strokeWidth={1.5}
+                                dot={false}
+                                name={label}
+                                isAnimationActive={false}
+                            />
+                        ))}
+                    </LineChart>
+                </ResponsiveContainer>
+            )}
+        </Card>
+    )
+}

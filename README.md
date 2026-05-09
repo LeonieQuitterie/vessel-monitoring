@@ -173,8 +173,8 @@ npm run lint         # ESLint
 - [x] Mock data & service interfaces
 - [x] Layout shell (Sidebar, TopHeader)
 - [x] Dashboard page
-- [ ] Analytics page
-- [ ] Alerts page
+- [x] Analytics page
+- [x] Alerts page
 - [ ] Reports page
 - [ ] Settings page
 - [ ] Backend API integration (MySQL)
