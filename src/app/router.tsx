@@ -10,6 +10,7 @@ import {
 } from '@/features/alerts'
 import {
   AnalyticsOverviewBar, MultiParamTrendChart, PredictiveRiskPanel,
+  AnomalyDetection, BehaviorComparison, AnalyticsRecommendations,
 } from '@/features/analytics'
 import { useAlertStore } from '@/store/useAlertStore'
 
@@ -50,13 +51,18 @@ const AlertsPage = () => {
 const AnalyticsPage = () => (
   <div className="flex flex-col gap-4">
     <AnalyticsOverviewBar />
+
+    {/* Row 2: Trend + Risk */}
     <div className="grid grid-cols-3 gap-4">
-      <div className="col-span-2">
-        <MultiParamTrendChart />
-      </div>
-      <div className="col-span-1">
-        <PredictiveRiskPanel />
-      </div>
+      <div className="col-span-2"><MultiParamTrendChart /></div>
+      <div className="col-span-1"><PredictiveRiskPanel /></div>
+    </div>
+
+    {/* Row 3: Anomaly + Behavior + Recommendations */}
+    <div className="grid grid-cols-3 gap-4">
+      <div className="col-span-1"><AnomalyDetection /></div>
+      <div className="col-span-1"><BehaviorComparison /></div>
+      <div className="col-span-1"><AnalyticsRecommendations /></div>
     </div>
   </div>
 )
