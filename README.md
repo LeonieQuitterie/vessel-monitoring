@@ -169,8 +169,8 @@ npm run lint         # ESLint
 - [x] Project setup & architecture
 - [x] Folder structure & path aliases
 - [x] Providers (QueryClient, Router)
-- [ ] Type definitions
-- [ ] Mock data & service interfaces
+- [x] Type definitions
+- [x] Mock data & service interfaces
 - [ ] Layout shell (Sidebar, TopHeader)
 - [ ] Dashboard page
 - [ ] Analytics page
@@ -192,4 +192,4 @@ npm run lint         # ESLint
 
 ## 📄 License
 
-Private project — Sea Sense Technologies © 2024
+Private project — VesESP © 2024
