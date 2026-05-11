@@ -1,14 +1,19 @@
+export interface LocalizedString {
+  en: string
+  vi: string
+}
+
 export interface SensorModule {
-  name: string
-  id: string
+  name: LocalizedString
+  id: string                          // mã kỹ thuật — không dịch
   status: 'online' | 'offline'
 }
 
 export interface GatewayInfo {
-  gatewayId: string
-  firmwareVersion: string
+  gatewayId: string                   // mã kỹ thuật — không dịch
+  firmwareVersion: string             // version — không dịch
   status: 'connected' | 'disconnected'
-  network: string
+  network: string                     // tên mạng — không dịch
 }
 
 export interface ThresholdConfig {
@@ -22,8 +27,8 @@ export interface ThresholdConfig {
 }
 
 export interface UserRole {
-  role: 'Admin' | 'Operator' | 'Technician'
-  description: string
+  role: 'Admin' | 'Operator' | 'Technician'  // role — không dịch
+  description: LocalizedString
   count: number
 }
 

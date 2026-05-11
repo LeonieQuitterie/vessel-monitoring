@@ -2,28 +2,31 @@ import { ChevronsUp } from 'lucide-react'
 import { AlertSeverityBadge } from './AlertSeverityBadge'
 import { useAlertHistory } from '../hooks/useAlerts'
 import type { AlertStatus } from '../types/alert.types'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
-const statusConfig: Record<AlertStatus, { label: string; color: string }> = {
-    active: { label: 'Active', color: 'var(--status-danger)' },
-    acknowledged: { label: 'Acknowledged', color: 'var(--status-warn)' },
-    assigned: { label: 'Assigned', color: 'var(--status-info)' },
-    in_progress: { label: 'In Progress', color: 'var(--status-ok)' },
-    resolved: { label: 'Resolved', color: 'var(--text-muted)' },
-    pending: { label: 'Pending', color: 'var(--text-muted)' },
-}
+const getStatusConfig = (t: any) => ({
+    active: { label: t.alerts.status, color: 'var(--status-danger)' },
+    acknowledged: { label: t.alerts.acknowledged ?? 'Acknowledged', color: 'var(--status-warn)' },
+    assigned: { label: t.alerts.assigned ?? 'Assigned', color: 'var(--status-info)' },
+    in_progress: { label: t.alerts.inProgress ?? 'In Progress', color: 'var(--status-ok)' },
+    resolved: { label: t.alerts.resolved ?? 'Resolved', color: 'var(--text-muted)' },
+    pending: { label: t.alerts.pending ?? 'Pending', color: 'var(--text-muted)' },
+})
 
 export const AlertHistoryTable = () => {
     const { data: history, isLoading } = useAlertHistory()
+    const { t, language } = useTranslation()
+    const statusConfig = getStatusConfig(t)
 
     return (
         <div className="rounded-xl border border-[var(--bg-border)] bg-[var(--bg-card)] p-4">
             {/* Header */}
             <div className="flex items-center justify-between mb-3">
                 <p className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest">
-                    Alert History & Escalation Flow
+                    {t.alerts.history}
                 </p>
                 <button className="text-[10px] text-[var(--accent-cyan)] hover:underline">
-                    View Full History →
+                    {t.alerts.viewHistory}
                 </button>
             </div>
 
@@ -32,7 +35,7 @@ export const AlertHistoryTable = () => {
                 <table className="w-full text-[11px]">
                     <thead>
                         <tr className="border-b border-[var(--bg-border)]">
-                            {['Time (UTC)', 'Event', 'Severity', 'Triggered By', 'Escalation', 'Assigned To', 'Status'].map(h => (
+                            {[t.alerts.timestamp, 'Event', t.alerts.severity2, t.alerts.triggeredBy, t.alerts.escalation, t.alerts.assignedTo, t.alerts.status].map(h => (
                                 <th key={h} className="text-left text-[9px] font-semibold text-[var(--text-muted)] uppercase tracking-wider pb-2 pr-4 whitespace-nowrap">
                                     {h}
                                 </th>
@@ -56,7 +59,7 @@ export const AlertHistoryTable = () => {
                                             {entry.time}
                                         </td>
                                         <td className="py-2.5 pr-4 text-[var(--text-secondary)] max-w-[180px] truncate">
-                                            {entry.event}
+                                            {entry.event[language]}
                                         </td>
                                         <td className="py-2.5 pr-4">
                                             <AlertSeverityBadge severity={entry.severity} />

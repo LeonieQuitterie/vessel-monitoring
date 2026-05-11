@@ -1,10 +1,15 @@
 import type { RiskLevel, TimeSeriesPoint } from '@/shared/types/common.types'
 
+export interface LocalizedString {
+  en: string
+  vi: string
+}
+
 export interface AnalyticsOverview {
   healthScore: number
-  healthLabel: string
+  healthLabel: LocalizedString
   anomalyScore: number
-  anomalyLabel: string
+  anomalyLabel: LocalizedString
 }
 
 export interface TrendDataPoint {
@@ -17,7 +22,7 @@ export interface TrendDataPoint {
 
 export interface RiskItem {
   id: string
-  name: string
+  name: LocalizedString
   score: number
   level: RiskLevel
   icon: string
@@ -26,16 +31,16 @@ export interface RiskItem {
 export interface AnomalyEvent {
   id: string
   timestamp: string
-  parameter: string
+  parameter: LocalizedString
   value: number
   unit: string
-  deviation: string
-  component: string
+  deviation: LocalizedString
+  component: string             // tên kỹ thuật — không dịch
   severity: 'high' | 'medium' | 'low'
 }
 
 export interface BehaviorMetric {
-  label: string
+  label: LocalizedString
   unit: string
   current: number
   normalMin: number
@@ -45,8 +50,8 @@ export interface BehaviorMetric {
 export interface Recommendation {
   id: string
   level: 'danger' | 'warning' | 'info' | 'ok'
-  title: string
-  description: string
+  title: LocalizedString
+  description: LocalizedString
 }
 
 export type { TimeSeriesPoint }

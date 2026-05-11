@@ -1,24 +1,22 @@
 import { NavLink } from 'react-router-dom'
-import {
-    LayoutDashboard,
-    BarChart2,
-    Bell,
-    FileText,
-    Settings,
-    Menu,
-    Wifi,
-} from 'lucide-react'
+import { LayoutDashboard, BarChart2, Bell, FileText, Settings, Menu, Wifi } from 'lucide-react'
 import { APP_CONFIG } from '@/shared/constants/appConfig'
-
-const navItems = [
-    { to: '/', label: 'Dashboard', icon: LayoutDashboard },
-    { to: '/analytics', label: 'Analytics', icon: BarChart2 },
-    { to: '/alerts', label: 'Alerts', icon: Bell },
-    { to: '/reports', label: 'Reports', icon: FileText },
-    { to: '/settings', label: 'Settings', icon: Settings },
-]
+import { useLanguageStore } from '@/store/useLanguageStore'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
 export const Sidebar = () => {
+
+    const { toggle, language } = useLanguageStore()
+    const { t } = useTranslation()
+
+    const navItems = [
+        { to: '/', label: t.nav.dashboard, icon: LayoutDashboard },
+        { to: '/analytics', label: t.nav.analytics, icon: BarChart2 },
+        { to: '/alerts', label: t.nav.alerts, icon: Bell },
+        { to: '/reports', label: t.nav.reports, icon: FileText },
+        { to: '/settings', label: t.nav.settings, icon: Settings },
+    ]
+
     return (
         <aside className="flex flex-col w-[72px] min-h-screen border-r border-[var(--bg-border)] bg-[var(--bg-surface)] z-50">
             {/* Logo / Hamburger */}
@@ -49,6 +47,29 @@ export const Sidebar = () => {
                     </NavLink>
                 ))}
             </nav>
+
+            {/* Language Toggle */}
+            <button
+                onClick={toggle}
+                className="flex items-center justify-center mx-2 mb-2 py-1.5 rounded-lg border border-[var(--bg-border)] hover:border-[var(--accent-cyan)] transition-all group"
+            >
+                <span className={[
+                    'text-[9px] font-bold px-1.5 py-0.5 rounded transition-all',
+                    language === 'en'
+                        ? 'bg-[var(--accent-cyan)] text-[var(--bg-base)]'
+                        : 'text-[var(--text-muted)]',
+                ].join(' ')}>
+                    EN
+                </span>
+                <span className={[
+                    'text-[9px] font-bold px-1.5 py-0.5 rounded transition-all',
+                    language === 'vi'
+                        ? 'bg-[var(--accent-cyan)] text-[var(--bg-base)]'
+                        : 'text-[var(--text-muted)]',
+                ].join(' ')}>
+                    VI
+                </span>
+            </button>
 
             {/* System Online */}
             <div className="flex flex-col items-center justify-center py-4 gap-1 border-t border-[var(--bg-border)]">

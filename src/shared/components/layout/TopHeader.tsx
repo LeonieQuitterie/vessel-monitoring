@@ -1,8 +1,11 @@
 import { useUTCClock } from '@/shared/hooks/useUTCClock'
 import { useSystemStore } from '@/store/useSystemStore'
 import { APP_CONFIG } from '@/shared/constants/appConfig'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
 export const TopHeader = () => {
+    const { t } = useTranslation() 
+
     const { timeString, dateString } = useUTCClock()
     const vessel = useSystemStore(s => s.vessel)
 
@@ -12,10 +15,10 @@ export const TopHeader = () => {
             {/* Left: Title */}
             <div className="flex flex-col justify-center">
                 <h1 className="text-sm font-bold tracking-widest text-[var(--text-primary)] uppercase leading-none">
-                    {APP_CONFIG.systemName}
+                    {t.system.name}
                 </h1>
                 <p className="text-[10px] text-[var(--text-muted)] tracking-wider mt-0.5">
-                    {APP_CONFIG.systemTagline}
+                    {t.system.tagline}
                 </p>
             </div>
 

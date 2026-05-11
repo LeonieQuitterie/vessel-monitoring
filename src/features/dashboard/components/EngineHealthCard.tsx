@@ -10,6 +10,7 @@ import { Sparkline } from '@/shared/components/ui/Sparkline'
 import { useEngineHealth } from '../hooks/useEngineHealth'
 import type { SensorCard } from '@/shared/types/sensor.types'
 import { useUTCClock } from '@/shared/hooks/useUTCClock'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
 const iconMap: Record<string, React.ElementType> = {
     temperature: Thermometer,
@@ -23,7 +24,7 @@ const colorMap: Record<string, string> = {
     humidity: 'var(--status-ok)',
 }
 
-const SensorCardItem = ({ card }: { card: SensorCard }) => {
+const SensorCardItem = ({ card, language, t }: { card: SensorCard; language: 'en' | 'vi'; t: any }) => {
     const Icon = iconMap[card.id] ?? Activity
     const color = colorMap[card.id] ?? 'var(--accent-cyan)'
 
@@ -38,7 +39,7 @@ const SensorCardItem = ({ card }: { card: SensorCard }) => {
                     <Icon className="w-4 h-4" style={{ color }} />
                 </div>
                 <span className="text-[11px] text-[var(--text-secondary)] font-medium">
-                    {card.label}
+                    {card.label[language]}
                 </span>
             </div>
 
@@ -50,7 +51,7 @@ const SensorCardItem = ({ card }: { card: SensorCard }) => {
                     </span>
                     <span className="text-xs text-[var(--text-muted)] ml-1">{card.unit}</span>
                     <p className="text-[10px] text-[var(--text-muted)] mt-0.5">
-                        Normal Range: {card.normalMin} – {card.normalMax} {card.unit}
+                        {t.dashboard.normalRange}: {card.normalMin} – {card.normalMax} {card.unit}
                     </p>
                 </div>
 
@@ -62,14 +63,14 @@ const SensorCardItem = ({ card }: { card: SensorCard }) => {
 
             {/* Badge */}
             <Badge
-                label={card.isWithinRange ? 'Within Range' : 'Out of Range'}
+                label={card.isWithinRange ? t.dashboard.withinRange : t.dashboard.outOfRange}
                 variant={card.isWithinRange ? 'ok' : 'danger'}
             />
         </Card>
     )
 }
 
-const LastSyncCard = () => {
+const LastSyncCard = ({ t }: { t: any }) => {
     const { timeString, dateString } = useUTCClock()
 
     return (
@@ -79,7 +80,7 @@ const LastSyncCard = () => {
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-[var(--accent-cyan)22]">
                     <RefreshCw className="w-4 h-4 text-[var(--accent-cyan)]" />
                 </div>
-                <span className="text-[11px] text-[var(--text-secondary)] font-medium">Last Sync</span>
+                <span className="text-[11px] text-[var(--text-secondary)] font-medium">{t.system.lastSync}</span>
             </div>
 
             {/* Value */}
@@ -91,13 +92,15 @@ const LastSyncCard = () => {
                 <p className="text-[10px] text-[var(--text-muted)] mt-0.5">{dateString}</p>
             </div>
 
-            <Badge label="Synced" variant="synced" />
+            <Badge label={t.system.synced} variant="synced" />
         </Card>
     )
 }
 
 export const EngineHealthOverview = () => {
     const { data: cards, isLoading } = useEngineHealth()
+
+    const { t, language } = useTranslation()
 
     if (isLoading) {
         return (
@@ -112,11 +115,11 @@ export const EngineHealthOverview = () => {
     return (
         <div>
             <h2 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest mb-3">
-                Engine Health Overview
+                {t.dashboard.engineHealth}  
             </h2>
             <div className="flex gap-3">
-                {cards?.map(card => <SensorCardItem key={card.id} card={card} />)}
-                <LastSyncCard />
+                {cards?.map(card => <SensorCardItem key={card.id} card={card} language={language} t={t} />)}
+                <LastSyncCard t={t} />
             </div>
         </div>
     )

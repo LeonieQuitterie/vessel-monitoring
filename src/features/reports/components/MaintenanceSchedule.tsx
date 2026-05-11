@@ -1,5 +1,6 @@
 import { Wrench, Fuel, Activity, Shield, ChevronRight } from 'lucide-react'
 import { useMaintenanceSchedules } from '../hooks/useReports'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
 const iconMap: Record<string, React.ElementType> = {
     engine: Wrench,
@@ -17,13 +18,15 @@ const dueColor = (days: number) => {
 export const MaintenanceSchedule = () => {
     const { data: schedules, isLoading } = useMaintenanceSchedules()
 
+    const { t, language } = useTranslation()
+
     return (
         <div className="rounded-xl border border-[var(--bg-border)] bg-[var(--bg-card)] p-4 flex flex-col gap-3">
             <div className="flex items-center justify-between">
                 <p className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest">
-                    Scheduled Maintenance & Inspection Logs
+                    {t.reports.scheduled}
                 </p>
-                <button className="text-[10px] text-[var(--accent-cyan)] hover:underline">View All</button>
+                <button className="text-[10px] text-[var(--accent-cyan)] hover:underline">{t.reports.viewAll}</button>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -44,17 +47,17 @@ export const MaintenanceSchedule = () => {
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <p className="text-[11px] font-semibold text-[var(--text-primary)] truncate">
-                                        {item.title}
+                                        {item.title[language]}
                                     </p>
                                     <p className="text-[10px] text-[var(--text-muted)]">
-                                        Scheduled: {item.scheduledDate}
+                                        {t.reports.scheduled}: {item.scheduledDate}
                                     </p>
                                 </div>
                                 <span
                                     className="text-[9px] font-bold px-2 py-1 rounded border shrink-0"
                                     style={{ color, borderColor: color, backgroundColor: `${color}15` }}
                                 >
-                                    Due in {item.dueInDays} days
+                                    {t.reports.dueIn} {item.dueInDays} {t.reports.days}
                                 </span>
                                 <ChevronRight className="w-3.5 h-3.5 text-[var(--text-muted)] shrink-0" />
                             </button>
@@ -63,7 +66,7 @@ export const MaintenanceSchedule = () => {
             </div>
 
             <button className="text-[10px] text-[var(--accent-cyan)] hover:underline self-start">
-                View all maintenance schedules →
+                {t.reports.viewSchedules}
             </button>
         </div>
     )

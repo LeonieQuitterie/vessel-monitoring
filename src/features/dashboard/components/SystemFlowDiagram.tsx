@@ -9,14 +9,7 @@ import {
 } from 'lucide-react'
 import { Card } from '@/shared/components/ui/Card'
 import { useSystemEvents } from '../hooks/useEngineHealth'
-
-const flowNodes = [
-    { id: 'sensors', label: 'Sensors', sublabel: 'Data Collection', icon: Cpu },
-    { id: 'gateway', label: 'Edge Gateway', sublabel: 'Data Processing', icon: Router },
-    { id: 'cloud', label: 'Cloud', sublabel: 'Secure Transfer', icon: Cloud },
-    { id: 'analytics', label: 'Analytics', sublabel: 'Insights Generated', icon: BarChart2 },
-    { id: 'dashboard', label: 'Dashboard', sublabel: 'Monitoring Active', icon: Monitor },
-]
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
 const categoryColor: Record<string, string> = {
     system: 'var(--status-ok)',
@@ -28,10 +21,20 @@ const categoryColor: Record<string, string> = {
 export const SystemFlowDiagram = () => {
     const { data: events, isLoading } = useSystemEvents()
 
+    const { t, language } = useTranslation()
+
+    const flowNodes = [
+        { id: 'sensors', label: 'Sensors', sublabel: 'Data Collection', icon: Cpu },
+        { id: 'gateway', label: 'Edge Gateway', sublabel: 'Data Processing', icon: Router },
+        { id: 'cloud', label: 'Cloud', sublabel: 'Secure Transfer', icon: Cloud },
+        { id: 'analytics', label: 'Analytics', sublabel: 'Insights Generated', icon: BarChart2 },
+        { id: 'dashboard', label: 'Dashboard', sublabel: 'Monitoring Active', icon: Monitor },
+    ]
+
     return (
         <Card className="flex flex-col gap-4">
             <h2 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest">
-                System Flow & Recent Events
+                {t.dashboard.systemFlow}
             </h2>
 
             {/* Flow nodes */}
@@ -78,7 +81,7 @@ export const SystemFlowDiagram = () => {
                                 style={{ color: categoryColor[event.category] ?? 'var(--status-ok)' }}
                             />
                             <span className="text-[var(--text-secondary)] flex-1 truncate">
-                                {event.message}
+                                {event.message[language]}
                             </span>
                             <span
                                 className="text-[9px] px-1.5 py-0.5 rounded border shrink-0"
@@ -95,7 +98,7 @@ export const SystemFlowDiagram = () => {
 
             {/* View all */}
             <button className="text-[10px] text-[var(--accent-cyan)] hover:underline self-end mt-auto">
-                View all events →
+                {t.dashboard.viewAllEvents}
             </button>
         </Card>
     )

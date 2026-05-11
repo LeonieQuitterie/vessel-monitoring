@@ -1,6 +1,7 @@
 import { CheckCircle2, UserPlus, FileText, ShieldCheck, AlertTriangle } from 'lucide-react'
 import { AlertSeverityBadge } from './AlertSeverityBadge'
 import { useAlerts } from '../hooks/useAlerts'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
 interface Props {
     alertId: string | null
@@ -8,13 +9,14 @@ interface Props {
 
 export const AlertDetailPanel = ({ alertId }: Props) => {
     const { data: alerts } = useAlerts()
+    const { t, language } = useTranslation()
     const alert = alerts?.find(a => a.id === alertId)
 
     if (!alertId) {
         return (
             <div className="flex flex-col items-center justify-center h-full gap-3 text-center p-8">
                 <ShieldCheck className="w-10 h-10 text-[var(--text-muted)]" />
-                <p className="text-sm text-[var(--text-muted)]">Select an alert to view details</p>
+                <p className="text-sm text-[var(--text-muted)]">{t.alerts.selectAlert}</p>
             </div>
         )
     }
@@ -43,7 +45,7 @@ export const AlertDetailPanel = ({ alertId }: Props) => {
                         }}
                     />
                     <h3 className="text-sm font-bold text-[var(--text-primary)] leading-tight">
-                        {alert.title}
+                        {alert.title[language]}
                     </h3>
                 </div>
                 <AlertSeverityBadge severity={alert.severity} size="md" />
@@ -52,10 +54,10 @@ export const AlertDetailPanel = ({ alertId }: Props) => {
             {/* Metadata */}
             <div className="grid grid-cols-2 gap-x-6 gap-y-2">
                 {[
-                    { label: 'Affected Subsystem', value: alert.subsystem },
-                    { label: 'Timestamp', value: `${new Date(alert.timestamp).toLocaleDateString('en', { month: 'short', day: '2-digit', year: 'numeric' })} UTC (${alert.timeAgo})` },
-                    { label: 'Severity', value: alert.severity.toUpperCase() },
-                    { label: 'Component', value: alert.component },
+                    { label: t.alerts.affectedSystem, value: alert.subsystem[language] },
+                    { label: t.alerts.timestamp, value: `${new Date(alert.timestamp).toLocaleDateString('en', { month: 'short', day: '2-digit', year: 'numeric' })} UTC (${alert.timeAgo})` },
+                    { label: t.alerts.severity2, value: alert.severity.toUpperCase() },
+                    { label: t.alerts.assignedTo, value: alert.component },
                 ].map(({ label, value }) => (
                     <div key={label}>
                         <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">{label}</p>
@@ -69,20 +71,20 @@ export const AlertDetailPanel = ({ alertId }: Props) => {
             {/* Probable Cause */}
             <div>
                 <p className="text-[11px] font-semibold text-[var(--text-primary)] mb-1.5">
-                    Probable Cause
+                    {t.alerts.probableCause}
                 </p>
                 <p className="text-[11px] text-[var(--text-secondary)] leading-relaxed">
-                    {alert.probableCause}
+                    {alert.probableCause[language]}
                 </p>
             </div>
 
             {/* Recommended Actions */}
             <div>
                 <p className="text-[11px] font-semibold text-[var(--text-primary)] mb-1.5">
-                    Recommended Actions
+                    {t.alerts.recommendedActions}
                 </p>
                 <ul className="flex flex-col gap-1">
-                    {alert.recommendedActions.map((action, i) => (
+                    {alert.recommendedActions[language].map((action, i) => (
                         <li key={i} className="flex items-start gap-2 text-[11px] text-[var(--text-secondary)]">
                             <span className="text-[var(--accent-cyan)] mt-0.5 shrink-0">•</span>
                             {action}
@@ -94,10 +96,10 @@ export const AlertDetailPanel = ({ alertId }: Props) => {
             {/* Action Buttons */}
             <div className="flex items-center gap-2 mt-auto pt-3 border-t border-[var(--bg-border)]">
                 {[
-                    { label: 'Acknowledge', icon: CheckCircle2, style: 'border border-[var(--bg-border)] text-[var(--text-secondary)] hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)]' },
-                    { label: 'Assign Technician', icon: UserPlus, style: 'border border-[var(--bg-border)] text-[var(--text-secondary)] hover:border-[var(--status-info)] hover:text-[var(--status-info)]' },
-                    { label: 'Create Report', icon: FileText, style: 'border border-[var(--bg-border)] text-[var(--text-secondary)] hover:border-[var(--status-warn)] hover:text-[var(--status-warn)]' },
-                    { label: 'Resolve', icon: CheckCircle2, style: 'border border-[var(--status-ok)] text-[var(--status-ok)] hover:bg-[var(--status-ok)] hover:text-[var(--bg-base)]' },
+                    { label: t.alerts.acknowledge, icon: CheckCircle2, style: 'border border-[var(--bg-border)] text-[var(--text-secondary)] hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)]' },
+                    { label: t.alerts.assignTech, icon: UserPlus, style: 'border border-[var(--bg-border)] text-[var(--text-secondary)] hover:border-[var(--status-info)] hover:text-[var(--status-info)]' },
+                    { label: t.alerts.createReport, icon: FileText, style: 'border border-[var(--bg-border)] text-[var(--text-secondary)] hover:border-[var(--status-warn)] hover:text-[var(--status-warn)]' },
+                    { label: t.alerts.resolve, icon: CheckCircle2, style: 'border border-[var(--status-ok)] text-[var(--status-ok)] hover:bg-[var(--status-ok)] hover:text-[var(--bg-base)]' },
                 ].map(({ label, icon: Icon, style }) => (
                     <button
                         key={label}

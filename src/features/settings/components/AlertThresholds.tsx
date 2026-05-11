@@ -2,16 +2,20 @@ import { useState } from 'react'
 import { Thermometer, Activity, Droplets, Zap, RefreshCw, Check } from 'lucide-react'
 import { useThresholdConfig } from '../hooks/useSettings'
 import type { ThresholdConfig } from '../types/settings.types'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
-const thresholdFields = [
-    { key: 'temperature', label: 'Temperature (°C)', sublabel: 'Normal: 50 – 80', icon: Thermometer, color: 'var(--chart-temp)', minKey: 'temperatureMin' as keyof ThresholdConfig, maxKey: 'temperatureMax' as keyof ThresholdConfig },
-    { key: 'vibration', label: 'Vibration (g)', sublabel: 'Normal: 0 – 0.5', icon: Activity, color: 'var(--chart-vibration)', minKey: 'vibrationMin' as keyof ThresholdConfig, maxKey: 'vibrationMax' as keyof ThresholdConfig },
-    { key: 'humidity', label: 'Humidity (%)', sublabel: 'Normal: 30 – 80', icon: Droplets, color: 'var(--chart-humidity)', minKey: 'humidityMin' as keyof ThresholdConfig, maxKey: 'humidityMax' as keyof ThresholdConfig },
-]
 
 export const AlertThresholds = () => {
     const { data: config } = useThresholdConfig()
     const [sensitivity, setSensitivity] = useState<'low' | 'medium' | 'high'>('medium')
+
+    const { t } = useTranslation()
+
+    const thresholdFields = [
+        { key: 'temperature', label: `${t.dashboard.temperature} (°C)`, sublabel: `Normal: 50 – 80`, icon: Thermometer, color: 'var(--chart-temp)', minKey: 'temperatureMin' as keyof ThresholdConfig, maxKey: 'temperatureMax' as keyof ThresholdConfig },
+        { key: 'vibration', label: `${t.dashboard.vibration} (g)`, sublabel: `Normal: 0 – 0.5`, icon: Activity, color: 'var(--chart-vibration)', minKey: 'vibrationMin' as keyof ThresholdConfig, maxKey: 'vibrationMax' as keyof ThresholdConfig },
+        { key: 'humidity', label: `${t.dashboard.humidity} (%)`, sublabel: `Normal: 30 – 80`, icon: Droplets, color: 'var(--chart-humidity)', minKey: 'humidityMin' as keyof ThresholdConfig, maxKey: 'humidityMax' as keyof ThresholdConfig },
+    ]
 
     return (
         <div className="rounded-xl border border-[var(--bg-border)] bg-[var(--bg-card)] p-4 flex flex-col gap-4 h-full">
@@ -19,7 +23,7 @@ export const AlertThresholds = () => {
             <div className="flex items-center gap-2">
                 <span className="w-5 h-5 rounded flex items-center justify-center bg-[var(--accent-cyan)] bg-opacity-20 text-[10px] font-bold text-[var(--accent-cyan)]">2</span>
                 <h2 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest">
-                    Alert Thresholds
+                    {t.settings.alertThresholds}
                 </h2>
             </div>
 
@@ -62,20 +66,24 @@ export const AlertThresholds = () => {
                         <Zap className="w-3.5 h-3.5 text-[var(--status-warn)]" />
                     </div>
                     <div className="flex-1">
-                        <p className="text-[11px] font-semibold text-[var(--text-primary)]">Risk Sensitivity</p>
+                        <p className="text-[11px] font-semibold text-[var(--text-primary)]">{t.settings.riskSensitivity}</p>
                         <div className="flex items-center gap-2 mt-1.5">
-                            {(['low', 'medium', 'high'] as const).map(level => (
+                            {([
+                                { key: 'low', label: t.alerts.informational },
+                                { key: 'medium', label: t.alerts.warnings },
+                                { key: 'high', label: t.alerts.critical },
+                            ] as const).map(({ key, label }) => (
                                 <button
-                                    key={level}
-                                    onClick={() => setSensitivity(level)}
+                                    key={key}
+                                    onClick={() => setSensitivity(key)}
                                     className={[
                                         'flex-1 py-1 rounded text-[10px] font-semibold capitalize transition-all',
-                                        sensitivity === level
+                                        sensitivity === key
                                             ? 'bg-[var(--accent-cyan)] text-[var(--bg-base)]'
                                             : 'bg-[var(--bg-surface)] text-[var(--text-muted)] hover:text-[var(--text-secondary)]',
                                     ].join(' ')}
                                 >
-                                    {level}
+                                    {label}
                                 </button>
                             ))}
                         </div>
@@ -87,11 +95,11 @@ export const AlertThresholds = () => {
             <div className="flex gap-2 mt-auto">
                 <button className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg border border-[var(--bg-border)] text-[11px] text-[var(--text-secondary)] hover:border-[var(--text-secondary)] transition-all">
                     <RefreshCw className="w-3.5 h-3.5" />
-                    Reset to Defaults
+                    {t.settings.resetDefaults}
                 </button>
                 <button className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg bg-[var(--accent-cyan)] text-[var(--bg-base)] text-[11px] font-bold hover:opacity-90 transition-opacity">
                     <Check className="w-3.5 h-3.5" />
-                    Save Changes
+                    {t.settings.saveChanges}
                 </button>
             </div>
         </div>

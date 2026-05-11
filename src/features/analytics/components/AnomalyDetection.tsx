@@ -3,6 +3,7 @@ import { AlertTriangle, Activity } from 'lucide-react'
 import { Card } from '@/shared/components/ui/Card'
 import { useAnomalyEvents } from '../hooks/useAnalytics'
 import type { AnomalyEvent } from '../types/analytics.types'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
 const severityColor = {
     high: 'var(--status-danger)',
@@ -26,6 +27,8 @@ export const AnomalyDetection = () => {
 
     const displayed = selected ?? latest
 
+    const { t, language } = useTranslation()
+
     return (
         <Card className="flex flex-col gap-4">
             {/* Header */}
@@ -34,7 +37,7 @@ export const AnomalyDetection = () => {
                     3
                 </span>
                 <h2 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest">
-                    Anomaly Detection
+                    {t.analytics.anomalyDetection}
                 </h2>
             </div>
 
@@ -71,11 +74,11 @@ export const AnomalyDetection = () => {
                         <div className="flex items-center gap-1.5 mb-2">
                             <Activity className="w-3.5 h-3.5 text-[var(--status-danger)]" />
                             <span className="text-[10px] font-semibold text-[var(--status-danger)] uppercase tracking-wider">
-                                Latest Anomaly
+                                {t.analytics.latestAnomaly}
                             </span>
                         </div>
                         <p className="text-[11px] font-semibold text-[var(--text-primary)] leading-tight">
-                            {displayed.parameter} anomaly detected at {displayed.timestamp}
+                            {displayed.parameter[language]} anomaly detected at {displayed.timestamp}
                         </p>
                         <span
                             className="inline-flex items-center gap-1 mt-2 px-2 py-0.5 rounded text-[9px] font-bold border"
@@ -93,14 +96,14 @@ export const AnomalyDetection = () => {
                     {/* Event Details */}
                     <div className="rounded-lg bg-[var(--bg-surface)] border border-[var(--bg-border)] p-3">
                         <p className="text-[10px] font-semibold text-[var(--text-secondary)] mb-2 uppercase tracking-wider">
-                            Event Details
+                            {t.analytics.eventDetails}
                         </p>
                         <div className="flex flex-col gap-1.5">
                             {[
-                                { label: 'Parameter', value: displayed.parameter },
-                                { label: 'Value', value: `${displayed.value} ${displayed.unit}` },
-                                { label: 'Deviation', value: displayed.deviation },
-                                { label: 'Component', value: displayed.component },
+                                { label: t.analytics.parameter, value: displayed.parameter[language] },
+                                { label: t.analytics.value, value: `${displayed.value} ${displayed.unit}` },
+                                { label: t.analytics.deviation, value: displayed.deviation[language] },
+                                { label: t.analytics.component, value: displayed.component },
                             ].map(({ label, value }) => (
                                 <div key={label} className="flex justify-between gap-2">
                                     <span className="text-[10px] text-[var(--text-muted)]">{label}</span>
@@ -115,7 +118,7 @@ export const AnomalyDetection = () => {
             ) : null}
 
             <button className="text-[10px] text-[var(--accent-cyan)] hover:underline self-end">
-                View all anomalies →
+                {t.analytics.viewAnomalies}
             </button>
         </Card>
     )

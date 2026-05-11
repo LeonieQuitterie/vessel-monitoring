@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 import { useMonthlyTrend, useReportStats } from '../hooks/useReports'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload?.length) return null
@@ -17,24 +18,26 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export const MonthlyTrendChart = () => {
     const { data: trend, isLoading } = useMonthlyTrend()
     const { data: stats } = useReportStats()
-    const [range] = useState('Last 6 Months')
+    const { t } = useTranslation()
+
+
 
     return (
         <div className="rounded-xl border border-[var(--bg-border)] bg-[var(--bg-card)] p-4 flex flex-col gap-3">
             <div className="flex items-center justify-between">
                 <p className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest">
-                    Monthly Incidents & Maintenance Trends
+                    {t.reports.monthlyTrend}
                 </p>
                 <span className="text-[10px] text-[var(--text-muted)] border border-[var(--bg-border)] px-2 py-1 rounded">
-                    {range}
+                    {t.reports.viewAll}
                 </span>
             </div>
 
             {/* Legend */}
             <div className="flex items-center gap-4">
                 {[
-                    { label: 'Maintenance Cases', color: 'var(--accent-cyan)' },
-                    { label: 'Incidents', color: 'var(--status-warn)' },
+                    { label: t.reports.totalMaintenance, color: 'var(--accent-cyan)' },
+                    { label: t.reports.totalIncidents, color: 'var(--status-warn)' },
                 ].map(({ label, color }) => (
                     <div key={label} className="flex items-center gap-1.5">
                         <span className="w-5 h-0.5 rounded" style={{ backgroundColor: color }} />
@@ -52,8 +55,8 @@ export const MonthlyTrendChart = () => {
                         <XAxis dataKey="month" tick={{ fontSize: 9, fill: 'var(--text-muted)' }} tickLine={false} axisLine={false} />
                         <YAxis tick={{ fontSize: 9, fill: 'var(--text-muted)' }} tickLine={false} axisLine={false} />
                         <Tooltip content={<CustomTooltip />} />
-                        <Line type="monotone" dataKey="maintenanceCases" stroke="var(--accent-cyan)" strokeWidth={1.5} dot={{ r: 3, fill: 'var(--accent-cyan)' }} name="Maintenance" isAnimationActive={false} />
-                        <Line type="monotone" dataKey="incidents" stroke="var(--status-warn)" strokeWidth={1.5} dot={{ r: 3, fill: 'var(--status-warn)' }} name="Incidents" isAnimationActive={false} />
+                        <Line type="monotone" dataKey="maintenanceCases" stroke="var(--accent-cyan)" strokeWidth={1.5} dot={{ r: 3, fill: 'var(--accent-cyan)' }} name={t.reports.totalMaintenance} isAnimationActive={false} />
+                        <Line type="monotone" dataKey="incidents" stroke="var(--status-warn)" strokeWidth={1.5} dot={{ r: 3, fill: 'var(--status-warn)' }} name={t.reports.totalIncidents} isAnimationActive={false} />
                     </LineChart>
                 </ResponsiveContainer>
             )}
@@ -61,9 +64,9 @@ export const MonthlyTrendChart = () => {
             {/* Stats row */}
             <div className="grid grid-cols-3 gap-3 pt-2 border-t border-[var(--bg-border)]">
                 {[
-                    { label: 'Total Maintenance Cases', value: stats?.totalMaintenanceCases ?? 0 },
-                    { label: 'Total Incidents', value: stats?.totalIncidents ?? 0 },
-                    { label: 'Avg. Resolution Time', value: `${stats?.avgResolutionHours ?? 0} hrs` },
+                    { label: t.reports.totalMaintenance, value: stats?.totalMaintenanceCases ?? 0 },
+                    { label: t.reports.totalIncidents, value: stats?.totalIncidents ?? 0 },
+                    { label: t.reports.avgResolution, value: `${stats?.avgResolutionHours ?? 0} hrs` },
                 ].map(({ label, value }) => (
                     <div key={label} className="text-center">
                         <p className="text-lg font-bold font-mono text-[var(--text-primary)]">{value}</p>

@@ -1,11 +1,13 @@
 import { Card } from '@/shared/components/ui/Card'
 import { useBehaviorMetrics } from '../hooks/useAnalytics'
 import type { BehaviorMetric } from '../types/analytics.types'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
-const GaugeDial = ({ metric }: { metric: BehaviorMetric }) => {
+const GaugeDial = ({ metric, language }: { metric: BehaviorMetric; language: 'en' | 'vi' }) => {
     const { current, normalMin, normalMax, label, unit } = metric
     const range = normalMax - normalMin
     const pct = Math.min(Math.max((current - normalMin) / range, 0), 1)
+
 
     // SVG arc math
     const r = 44
@@ -78,7 +80,7 @@ const GaugeDial = ({ metric }: { metric: BehaviorMetric }) => {
                     </text>
                 </svg>
             </div>
-            <p className="text-[11px] font-semibold text-[var(--text-secondary)]">{label}</p>
+            <p className="text-[11px] font-semibold text-[var(--text-secondary)]">{label[language]}</p>
             <p className="text-[9px] text-[var(--text-muted)]">
                 Normal: {normalMin} – {normalMax}
             </p>
@@ -88,6 +90,7 @@ const GaugeDial = ({ metric }: { metric: BehaviorMetric }) => {
 
 export const BehaviorComparison = () => {
     const { data: metrics, isLoading } = useBehaviorMetrics()
+    const { t, language } = useTranslation()
 
     return (
         <Card className="flex flex-col gap-4">
@@ -98,7 +101,7 @@ export const BehaviorComparison = () => {
                         4
                     </span>
                     <h2 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest">
-                        Behavior Comparison
+                        {t.analytics.behaviorCompare}
                     </h2>
                 </div>
             </div>
@@ -106,8 +109,8 @@ export const BehaviorComparison = () => {
             {/* Legend */}
             <div className="flex items-center gap-4">
                 {[
-                    { label: 'Normal Range', style: 'border-dashed border-[var(--text-muted)]', dashed: true },
-                    { label: 'Current', style: 'border-[var(--accent-cyan)]', dashed: false },
+                    { label: t.analytics.normalRange, style: 'border-dashed border-[var(--text-muted)]', dashed: true },
+                    { label: t.analytics.current, style: 'border-[var(--accent-cyan)]', dashed: false },
                 ].map(({ label, dashed }) => (
                     <div key={label} className="flex items-center gap-1.5">
                         <span
@@ -128,13 +131,13 @@ export const BehaviorComparison = () => {
             ) : (
                 <div className="flex items-center justify-around">
                     {metrics?.map(metric => (
-                        <GaugeDial key={metric.label} metric={metric} />
+                        <GaugeDial key={metric.label[language]} metric={metric} language={language} />
                     ))}
                 </div>
             )}
 
             <button className="text-[10px] text-[var(--accent-cyan)] hover:underline self-end">
-                View detailed comparison →
+                {t.analytics.viewComparison}
             </button>
         </Card>
     )

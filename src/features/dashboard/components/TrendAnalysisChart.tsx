@@ -11,6 +11,7 @@ import {
 import { Calendar } from 'lucide-react'
 import { Card } from '@/shared/components/ui/Card'
 import type { TimeRange } from '@/shared/types/common.types'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
 const timeRanges: TimeRange[] = ['1H', '6H', '12H', '24H', '7D']
 
@@ -41,12 +42,20 @@ export const TrendAnalysisChart = () => {
     const [activeRange, setActiveRange] = useState<TimeRange>('1H')
     const data = generateTrend(40)
 
+    const { t } = useTranslation()
+
+    const legend = [
+        { key: 'temperature', label: `${t.dashboard.temperature} (°C)`, color: 'var(--chart-temp)' },
+        { key: 'vibration', label: `${t.dashboard.vibration} (g)`, color: 'var(--chart-vibration)' },
+        { key: 'humidity', label: `${t.dashboard.humidity} (%)`, color: 'var(--chart-humidity)' },
+    ]
+
     return (
         <Card className="flex flex-col gap-3">
             {/* Header */}
             <div className="flex items-center justify-between">
                 <h2 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest">
-                    Trend Analysis
+                    {t.dashboard.trendAnalysis}
                 </h2>
 
                 <div className="flex items-center gap-1">
@@ -70,11 +79,7 @@ export const TrendAnalysisChart = () => {
 
             {/* Legend */}
             <div className="flex items-center gap-4">
-                {[
-                    { key: 'temperature', label: 'Temperature (°C)', color: 'var(--chart-temp)' },
-                    { key: 'vibration', label: 'Vibration (g)', color: 'var(--chart-vibration)' },
-                    { key: 'humidity', label: 'Humidity (%)', color: 'var(--chart-humidity)' },
-                ].map(({ key, label, color }) => (
+                {legend.map(({ key, label, color }) => (
                     <div key={key} className="flex items-center gap-1.5">
                         <span className="w-6 h-0.5 rounded" style={{ backgroundColor: color }} />
                         <span className="text-[10px] text-[var(--text-muted)]">{label}</span>
@@ -103,9 +108,9 @@ export const TrendAnalysisChart = () => {
                         axisLine={false}
                     />
                     <Tooltip content={<CustomTooltip />} />
-                    <Line type="monotone" dataKey="temperature" stroke="var(--chart-temp)" strokeWidth={1.5} dot={false} name="Temp" isAnimationActive={false} />
-                    <Line type="monotone" dataKey="vibration" stroke="var(--chart-vibration)" strokeWidth={1.5} dot={false} name="Vibration" isAnimationActive={false} />
-                    <Line type="monotone" dataKey="humidity" stroke="var(--chart-humidity)" strokeWidth={1.5} dot={false} name="Humidity" isAnimationActive={false} />
+                    <Line type="monotone" dataKey="temperature" stroke="var(--chart-temp)" strokeWidth={1.5} dot={false} name={t.dashboard.temperature} isAnimationActive={false} />
+                    <Line type="monotone" dataKey="vibration" stroke="var(--chart-vibration)" strokeWidth={1.5} dot={false} name={t.dashboard.vibration} isAnimationActive={false} />
+                    <Line type="monotone" dataKey="humidity" stroke="var(--chart-humidity)" strokeWidth={1.5} dot={false} name={t.dashboard.humidity} isAnimationActive={false} />
                 </LineChart>
             </ResponsiveContainer>
         </Card>

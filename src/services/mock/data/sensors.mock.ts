@@ -9,7 +9,7 @@ const generateSparkline = (base: number, count = 20) =>
 export const mockSensorCards: SensorCard[] = [
   {
     id: 'temperature',
-    label: 'Temperature',
+    label: { en: 'Temperature', vi: 'Nhiệt độ'  },
     value: 71.2,
     unit: '°C',
     normalMin: 50,
@@ -19,7 +19,7 @@ export const mockSensorCards: SensorCard[] = [
   },
   {
     id: 'vibration',
-    label: 'Vibration',
+    label: { en: 'Vibration',   vi: 'Rung động' },
     value: 0.18,
     unit: 'g',
     normalMin: 0,
@@ -29,7 +29,7 @@ export const mockSensorCards: SensorCard[] = [
   },
   {
     id: 'humidity',
-    label: 'Humidity',
+    label: { en: 'Humidity',    vi: 'Độ ẩm'     },
     value: 62,
     unit: '%',
     normalMin: 30,
@@ -43,21 +43,21 @@ export const mockSystemEvents: SystemEvent[] = [
   {
     id: 'EVT-001',
     timestamp: '14:32:45',
-    message: 'Data synchronized successfully',
+    message: { en: 'Data synchronized successfully', vi: 'Đồng bộ dữ liệu thành công'   },
     source: 'System',
     category: 'system',
   },
   {
     id: 'EVT-002',
     timestamp: '14:30:12',
-    message: 'Sensor data received',
+    message: { en: 'Sensor data received',           vi: 'Đã nhận dữ liệu cảm biến'     },
     source: 'Engine Room',
     category: 'sensor',
   },
   {
     id: 'EVT-003',
     timestamp: '14:28:05',
-    message: 'Edge gateway heartbeat',
+    message: { en: 'Edge gateway heartbeat',         vi: 'Tín hiệu cổng kết nối hoạt động' },
     source: 'Connectivity',
     category: 'connectivity',
   },

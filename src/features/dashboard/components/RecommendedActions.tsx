@@ -1,42 +1,45 @@
 import { ShieldCheck, ChevronRight, AlertTriangle, Info } from 'lucide-react'
 import { Card } from '@/shared/components/ui/Card'
-
-const actions = [
-    {
-        id: 1,
-        level: 'ok' as const,
-        title: 'Continue monitoring',
-        description: 'All parameters are within normal operating ranges.',
-    },
-    {
-        id: 2,
-        level: 'warning' as const,
-        title: 'Inspect if vibration rises further',
-        description: 'Vibration approaching upper threshold.',
-    },
-    {
-        id: 3,
-        level: 'info' as const,
-        title: 'Review recent trend history',
-        description: 'Temperature shows a gradual upward trend.',
-    },
-]
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
 const levelConfig = {
-    ok: { color: 'var(--status-ok)', Icon: ShieldCheck },
-    warning: { color: 'var(--status-warn)', Icon: AlertTriangle },
-    info: { color: 'var(--status-info)', Icon: Info },
-    danger: { color: 'var(--status-danger)', Icon: AlertTriangle },
+    ok:      { color: 'var(--status-ok)',     Icon: ShieldCheck   },
+    warning: { color: 'var(--status-warn)',   Icon: AlertTriangle },
+    info:    { color: 'var(--status-info)',   Icon: Info          },
+    danger:  { color: 'var(--status-danger)', Icon: AlertTriangle },
 }
 
 export const RecommendedActions = () => {
+    const { t } = useTranslation()
+
+    const actions = [
+        {
+            id: 1,
+            level: 'ok' as const,
+            title:       t.dashboard.recommendedActions[0].title,
+            description: t.dashboard.recommendedActions[0].description,
+        },
+        {
+            id: 2,
+            level: 'warning' as const,
+            title:       t.dashboard.recommendedActions[1].title,
+            description: t.dashboard.recommendedActions[1].description,
+        },
+        {
+            id: 3,
+            level: 'info' as const,
+            title:       t.dashboard.recommendedActions[2].title,
+            description: t.dashboard.recommendedActions[2].description,
+        },
+    ]
+
     return (
         <Card className="flex flex-col gap-3">
             {/* Header */}
             <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-[var(--accent-cyan)]" />
                 <h2 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest">
-                    Alerts & Recommended Actions
+                    {t.dashboard.recommendations}
                 </h2>
             </div>
 
@@ -73,10 +76,10 @@ export const RecommendedActions = () => {
             <div className="flex items-center justify-between pt-1 border-t border-[var(--bg-border)]">
                 <div className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[var(--status-ok)]" />
-                    <span className="text-[10px] text-[var(--text-muted)]">No active critical alerts</span>
+                    <span className="text-[10px] text-[var(--text-muted)]">{t.dashboard.noCritical}</span>
                 </div>
                 <button className="text-[10px] text-[var(--accent-cyan)] hover:underline">
-                    View all alerts →
+                    {t.dashboard.viewAllAlerts}
                 </button>
             </div>
         </Card>

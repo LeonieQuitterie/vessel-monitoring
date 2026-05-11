@@ -2,6 +2,7 @@ import { Heart, Activity, Ship, Clock } from 'lucide-react'
 import { useAnalyticsOverview } from '../hooks/useAnalytics'
 import { useSystemStore } from '@/store/useSystemStore'
 import { useUTCClock } from '@/shared/hooks/useUTCClock'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
 const ScoreCell = ({
     icon: Icon,
@@ -42,6 +43,7 @@ export const AnalyticsOverviewBar = () => {
     const { data: overview, isLoading } = useAnalyticsOverview()
     const vessel = useSystemStore(s => s.vessel)
     const { timeString, dateString } = useUTCClock()
+    const { t, language } = useTranslation()
 
     if (isLoading) return <div className="h-20 rounded-xl bg-[var(--bg-card)] animate-pulse" />
 
@@ -52,9 +54,9 @@ export const AnalyticsOverviewBar = () => {
                 <Activity className="w-5 h-5 text-[var(--accent-cyan)]" />
                 <div>
                     <p className="text-xs font-bold text-[var(--text-primary)] tracking-wide">
-                        Analytics Overview
+                        {t.analytics.title}
                     </p>
-                    <p className="text-[9px] text-[var(--text-muted)]">Predictive intelligence</p>
+                    <p className="text-[9px] text-[var(--text-muted)]">{t.analytics.recommendations}</p>
                 </div>
             </div>
 
@@ -62,10 +64,10 @@ export const AnalyticsOverviewBar = () => {
 
             <ScoreCell
                 icon={Heart}
-                label="Health Score"
+                label={t.analytics.healthScore}
                 value={overview?.healthScore ?? 0}
                 max={100}
-                sublabel={overview?.healthLabel ?? ''}
+                sublabel={overview?.healthLabel[language] ?? ''}
                 color="var(--status-ok)"
                 sparkColor="var(--status-ok)"
             />
@@ -74,10 +76,10 @@ export const AnalyticsOverviewBar = () => {
 
             <ScoreCell
                 icon={Activity}
-                label="Anomaly Score"
+                label={t.analytics.anomalyScore}
                 value={overview?.anomalyScore ?? 0}
                 max={100}
-                sublabel={overview?.anomalyLabel ?? ''}
+                sublabel={overview?.anomalyLabel[language] ?? ''}
                 color="var(--status-warn)"
                 sparkColor="var(--status-warn)"
             />
@@ -89,7 +91,7 @@ export const AnalyticsOverviewBar = () => {
                 <Ship className="w-4 h-4 text-[var(--text-muted)]" />
                 <div>
                     <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">
-                        Monitored Vessel
+                        {t.analytics.monitoredVessel}
                     </p>
                     <p className="text-xs font-semibold text-[var(--text-primary)]">{vessel.name}</p>
                     <p className="text-[10px] text-[var(--text-muted)]">IMO: {vessel.imo}</p>
@@ -102,7 +104,7 @@ export const AnalyticsOverviewBar = () => {
                 <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-[var(--text-muted)]" />
                     <div>
-                        <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">Timestamp</p>
+                        <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">{t.analytics.timestamp}</p>
                         <p className="text-sm font-bold font-mono text-[var(--accent-cyan)]">{timeString}</p>
                         <p className="text-[9px] text-[var(--text-muted)]">{dateString}</p>
                     </div>

@@ -1,5 +1,6 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 import { useAlertSummary } from '../hooks/useAlerts'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
 const CustomTooltip = ({ active, payload }: any) => {
     if (!active || !payload?.length) return null
@@ -12,19 +13,20 @@ const CustomTooltip = ({ active, payload }: any) => {
 
 export const AlertSeverityChart = () => {
     const { data: summary, isLoading } = useAlertSummary()
+    const { t } = useTranslation()
 
     if (isLoading) return <div className="h-48 rounded-xl bg-[var(--bg-card)] animate-pulse" />
 
     const chartData = [
-        { name: 'Critical', value: summary?.critical ?? 0, color: 'var(--status-danger)' },
-        { name: 'Warning', value: summary?.warnings ?? 0, color: 'var(--status-warn)' },
-        { name: 'Informational', value: summary?.informational ?? 0, color: 'var(--status-info)' },
+        { name: t.alerts.critical,      value: summary?.critical ?? 0,      color: 'var(--status-danger)' },
+        { name: t.alerts.warnings,      value: summary?.warnings ?? 0,      color: 'var(--status-warn)'   },
+        { name: t.alerts.informational, value: summary?.informational ?? 0, color: 'var(--status-info)'   },
     ]
 
     return (
         <div className="rounded-xl border border-[var(--bg-border)] bg-[var(--bg-card)] p-4">
             <p className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest mb-3">
-                Alert Severity Distribution (24h)
+                {t.alerts.severity}
             </p>
 
             <div className="flex items-center gap-4">
@@ -54,7 +56,9 @@ export const AlertSeverityChart = () => {
                         <span className="text-xl font-bold font-mono text-[var(--text-primary)]">
                             {summary?.total ?? 0}
                         </span>
-                        <span className="text-[9px] text-[var(--text-muted)]">Total</span>
+                        <span className="text-[9px] text-[var(--text-muted)]">
+                            {t.alerts.title}
+                        </span>
                     </div>
                 </div>
 

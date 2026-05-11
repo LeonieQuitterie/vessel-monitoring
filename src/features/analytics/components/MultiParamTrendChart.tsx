@@ -7,15 +7,11 @@ import { Calendar } from 'lucide-react'
 import { Card } from '@/shared/components/ui/Card'
 import { useAnalyticsTrend } from '../hooks/useAnalytics'
 import type { TimeRange } from '@/shared/types/common.types'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
 const timeRanges: TimeRange[] = ['1H', '6H', '12H', '24H', '7D']
 
-const lines = [
-    { key: 'temperature', label: 'Temperature (°C)', color: 'var(--chart-temp)' },
-    { key: 'vibration', label: 'Vibration (g)', color: 'var(--chart-vibration)' },
-    { key: 'humidity', label: 'Humidity (%)', color: 'var(--chart-humidity)' },
-    { key: 'power', label: 'Power (kW)', color: 'var(--chart-power)' },
-]
+
 
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload?.length) return null
@@ -34,6 +30,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export const MultiParamTrendChart = () => {
     const [activeRange, setActiveRange] = useState<TimeRange>('24H')
     const { data, isLoading } = useAnalyticsTrend(activeRange)
+    const { t } = useTranslation()
 
     const chartData = data?.map(d => ({
         ...d,
@@ -41,6 +38,13 @@ export const MultiParamTrendChart = () => {
             hour: '2-digit', minute: '2-digit', hour12: false,
         }),
     })) ?? []
+
+    const lines = [
+        { key: 'temperature', label: t.dashboard.temperature + ' (°C)', color: 'var(--chart-temp)' },
+        { key: 'vibration', label: t.dashboard.vibration + ' (g)', color: 'var(--chart-vibration)' },
+        { key: 'humidity', label: t.dashboard.humidity + ' (%)', color: 'var(--chart-humidity)' },
+        { key: 'power', label: 'Power (kW)', color: 'var(--chart-power)' },
+    ]
 
     return (
         <Card className="flex flex-col gap-3">
@@ -51,7 +55,7 @@ export const MultiParamTrendChart = () => {
                         1
                     </span>
                     <h2 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest">
-                        Multi-Parameter Trend Analysis
+                        {t.analytics.trendAnalysis}
                     </h2>
                 </div>
 

@@ -2,6 +2,7 @@ import { Bell, ShieldAlert, AlertTriangle, Info, CheckCircle2, Ship } from 'luci
 import { useAlertSummary } from '../hooks/useAlerts'
 import { useSystemStore } from '@/store/useSystemStore'
 import { useUTCClock } from '@/shared/hooks/useUTCClock'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
 interface StatCellProps {
     icon: React.ElementType
@@ -31,6 +32,7 @@ export const AlertCenterBar = () => {
     const { data: summary, isLoading } = useAlertSummary()
     const vessel = useSystemStore(s => s.vessel)
     const { timeString, dateString } = useUTCClock()
+    const { t } = useTranslation()
 
     if (isLoading) return <div className="h-20 rounded-xl bg-[var(--bg-card)] animate-pulse" />
 
@@ -40,22 +42,22 @@ export const AlertCenterBar = () => {
             <div className="flex items-center gap-2 mr-2">
                 <Bell className="w-5 h-5 text-[var(--accent-cyan)]" />
                 <div>
-                    <p className="text-xs font-bold text-[var(--text-primary)] tracking-wide">Alert Center</p>
-                    <p className="text-[9px] text-[var(--text-muted)]">Active monitoring</p>
+                    <p className="text-xs font-bold text-[var(--text-primary)] tracking-wide">{t.alerts.title}</p>
+                    <p className="text-[9px] text-[var(--text-muted)]">{t.alerts.activeAlerts}</p>
                 </div>
             </div>
 
             <div className="w-px h-10 bg-[var(--bg-border)]" />
 
-            <StatCell icon={ShieldAlert} label="Total" value={summary?.total ?? 0} delta="+8 vs last 24h" color="var(--accent-cyan)" />
+            <StatCell icon={ShieldAlert}   label={t.alerts.title}         value={summary?.total ?? 0}         delta="+8 vs last 24h" color="var(--accent-cyan)"   />
             <div className="w-px h-10 bg-[var(--bg-border)]" />
-            <StatCell icon={ShieldAlert} label="Critical" value={summary?.critical ?? 0} delta="+2 vs last 24h" color="var(--status-danger)" />
+            <StatCell icon={ShieldAlert}   label={t.alerts.critical}      value={summary?.critical ?? 0}      delta="+2 vs last 24h" color="var(--status-danger)" />
             <div className="w-px h-10 bg-[var(--bg-border)]" />
-            <StatCell icon={AlertTriangle} label="Warnings" value={summary?.warnings ?? 0} delta="+3 vs last 24h" color="var(--status-warn)" />
+            <StatCell icon={AlertTriangle} label={t.alerts.warnings}      value={summary?.warnings ?? 0}      delta="+3 vs last 24h" color="var(--status-warn)"   />
             <div className="w-px h-10 bg-[var(--bg-border)]" />
-            <StatCell icon={Info} label="Informational" value={summary?.informational ?? 0} delta="+3 vs last 24h" color="var(--status-info)" />
+            <StatCell icon={Info}          label={t.alerts.informational}  value={summary?.informational ?? 0} delta="+3 vs last 24h" color="var(--status-info)"   />
             <div className="w-px h-10 bg-[var(--bg-border)]" />
-            <StatCell icon={CheckCircle2} label="Resolved (24h)" value={summary?.resolved24h ?? 0} delta="+5 vs last 24h" color="var(--status-ok)" />
+            <StatCell icon={CheckCircle2}  label={t.alerts.resolved}      value={summary?.resolved24h ?? 0}   delta="+5 vs last 24h" color="var(--status-ok)"     />
 
             {/* Vessel + UTC — push right */}
             <div className="ml-auto flex items-center gap-4">
@@ -63,13 +65,13 @@ export const AlertCenterBar = () => {
                 <div className="flex items-center gap-2">
                     <Ship className="w-4 h-4 text-[var(--text-muted)]" />
                     <div>
-                        <p className="text-[10px] text-[var(--text-muted)]">Vessel</p>
+                        <p className="text-[10px] text-[var(--text-muted)]">{t.system.vessel}</p>
                         <p className="text-xs font-semibold text-[var(--text-primary)]">{vessel.name}</p>
                     </div>
                 </div>
                 <div className="w-px h-10 bg-[var(--bg-border)]" />
                 <div>
-                    <p className="text-[10px] text-[var(--text-muted)]">UTC</p>
+                    <p className="text-[10px] text-[var(--text-muted)]">{t.system.utc}</p>
                     <p className="text-sm font-bold font-mono text-[var(--accent-cyan)]">{timeString}</p>
                     <p className="text-[9px] text-[var(--text-muted)]">{dateString}</p>
                 </div>

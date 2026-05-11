@@ -2,6 +2,7 @@ import { Zap, Thermometer, Activity, Shield } from 'lucide-react'
 import { Card } from '@/shared/components/ui/Card'
 import { useRiskItems } from '../hooks/useAnalytics'
 import type { RiskLevel } from '@/shared/types/common.types'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
 const iconMap: Record<string, React.ElementType> = {
     bearing: Activity,
@@ -10,14 +11,16 @@ const iconMap: Record<string, React.ElementType> = {
     power: Zap,
 }
 
-const levelConfig: Record<RiskLevel, { color: string; label: string }> = {
-    high: { color: 'var(--status-danger)', label: 'High' },
-    medium: { color: 'var(--status-warn)', label: 'Medium' },
-    low: { color: 'var(--status-ok)', label: 'Low' },
-}
-
 export const PredictiveRiskPanel = () => {
     const { data: risks, isLoading } = useRiskItems()
+
+    const { t, language } = useTranslation()
+
+    const levelConfig: Record<RiskLevel, { color: string; label: string }> = {
+        high: { color: 'var(--status-danger)', label: t.alerts.critical },
+        medium: { color: 'var(--status-warn)', label: t.alerts.warnings },
+        low: { color: 'var(--status-ok)', label: t.alerts.informational },
+    }
 
     return (
         <Card className="flex flex-col gap-4">
@@ -27,7 +30,7 @@ export const PredictiveRiskPanel = () => {
                     2
                 </span>
                 <h2 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest">
-                    Predictive Risk Assessment
+                    {t.analytics.riskAssessment}
                 </h2>
             </div>
 
@@ -53,7 +56,7 @@ export const PredictiveRiskPanel = () => {
                                         <Icon className="w-3.5 h-3.5" style={{ color }} />
                                     </div>
                                     <span className="text-[11px] text-[var(--text-secondary)] flex-1">
-                                        {risk.name}
+                                        {risk.name[language]}
                                     </span>
                                     <span
                                         className="text-[10px] font-bold"

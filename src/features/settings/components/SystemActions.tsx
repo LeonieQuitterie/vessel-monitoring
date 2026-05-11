@@ -1,17 +1,22 @@
 import { HardDrive, Upload, Power, Trash2 } from 'lucide-react'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
-const actions = [
-    { icon: HardDrive, label: 'Backup Configuration', sub: 'Download system configuration backup', btnLabel: 'Backup', btnStyle: 'border border-[var(--bg-border)] text-[var(--text-secondary)] hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)]' },
-    { icon: Upload, label: 'Restore Configuration', sub: 'Upload configuration file to restore', btnLabel: 'Restore', btnStyle: 'border border-[var(--bg-border)] text-[var(--text-secondary)] hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)]' },
-    { icon: Power, label: 'Reboot Edge Gateway', sub: 'Restart the edge gateway device', btnLabel: 'Reboot', btnStyle: 'border border-[var(--status-warn)] text-[var(--status-warn)] hover:bg-[var(--status-warn)] hover:text-[var(--bg-base)]' },
-    { icon: Trash2, label: 'Factory Reset', sub: 'Reset all settings to factory defaults', btnLabel: 'Reset', btnStyle: 'border border-[var(--status-danger)] text-[var(--status-danger)] hover:bg-[var(--status-danger)] hover:text-[var(--bg-base)]' },
-]
 
 export const SystemActions = () => {
+
+    const { t } = useTranslation()
+
+    const actions = [
+        { icon: HardDrive, label: t.settings.backup, sub: t.settings.backupSub, btnLabel: 'Backup', btnStyle: 'border border-[var(--bg-border)] text-[var(--text-secondary)] hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)]' },
+        { icon: Upload, label: t.settings.restore, sub: t.settings.restoreSub, btnLabel: 'Restore', btnStyle: 'border border-[var(--bg-border)] text-[var(--text-secondary)] hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)]' },
+        { icon: Power, label: t.settings.reboot, sub: t.settings.rebootSub, btnLabel: 'Reboot', btnStyle: 'border border-[var(--status-warn)] text-[var(--status-warn)] hover:bg-[var(--status-warn)] hover:text-[var(--bg-base)]' },
+        { icon: Trash2, label: t.settings.factoryReset, sub: t.settings.factoryResetSub, btnLabel: 'Reset', btnStyle: 'border border-[var(--status-danger)] text-[var(--status-danger)] hover:bg-[var(--status-danger)] hover:text-[var(--bg-base)]' },
+    ]
+
     return (
         <div className="rounded-xl border border-[var(--bg-border)] bg-[var(--bg-card)] p-4 flex flex-col gap-3">
             <p className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest">
-                System Actions
+                {t.settings.systemActions}
             </p>
             {actions.map(({ icon: Icon, label, sub, btnLabel, btnStyle }) => (
                 <div key={label} className="flex items-center gap-3">

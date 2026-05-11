@@ -1,8 +1,10 @@
 import { Wifi, ChevronRight, Edit2 } from 'lucide-react'
 import { useDeviceConfig } from '../hooks/useSettings'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
 export const DeviceConfiguration = () => {
     const { data, isLoading } = useDeviceConfig()
+    const { t, language } = useTranslation()
 
     return (
         <div className="rounded-xl border border-[var(--bg-border)] bg-[var(--bg-card)] p-4 flex flex-col gap-4 h-full">
@@ -10,7 +12,7 @@ export const DeviceConfiguration = () => {
             <div className="flex items-center gap-2">
                 <span className="w-5 h-5 rounded flex items-center justify-center bg-[var(--accent-cyan)] bg-opacity-20 text-[10px] font-bold text-[var(--accent-cyan)]">1</span>
                 <h2 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest">
-                    Device Configuration
+                    {t.settings.deviceConfig}
                 </h2>
             </div>
 
@@ -26,7 +28,7 @@ export const DeviceConfiguration = () => {
                     <div className="rounded-lg bg-[var(--bg-surface)] border border-[var(--bg-border)] p-3">
                         <div className="flex items-center justify-between mb-2">
                             <p className="text-[11px] font-bold text-[var(--accent-cyan)] uppercase tracking-wider">
-                                Sensor Modules
+                                {t.settings.sensorModules}
                             </p>
                             <span className="text-[9px] px-2 py-0.5 rounded border border-[var(--accent-cyan)] text-[var(--accent-cyan)]">
                                 {data?.sensors.length} Active
@@ -35,7 +37,7 @@ export const DeviceConfiguration = () => {
                         <div className="flex flex-col gap-1.5">
                             {data?.sensors.map(sensor => (
                                 <div key={sensor.id} className="flex items-center justify-between text-[11px]">
-                                    <span className="text-[var(--text-secondary)]">{sensor.name}</span>
+                                    <span className="text-[var(--text-secondary)]">{sensor.name[language]}</span>
                                     <span className="text-[var(--text-muted)] font-mono">ID: {sensor.id}</span>
                                     <div className="flex items-center gap-1">
                                         <span className="w-1.5 h-1.5 rounded-full bg-[var(--status-ok)]" />
@@ -45,7 +47,7 @@ export const DeviceConfiguration = () => {
                             ))}
                         </div>
                         <button className="text-[10px] text-[var(--accent-cyan)] hover:underline mt-2">
-                            View all sensors &gt;
+                            {t.settings.viewAllSensors}
                         </button>
                     </div>
 
@@ -61,9 +63,9 @@ export const DeviceConfiguration = () => {
                         </div>
                         <div className="flex flex-col gap-1.5">
                             {[
-                                { label: 'Gateway ID', value: data?.gateway.gatewayId },
-                                { label: 'Firmware Version', value: data?.gateway.firmwareVersion },
-                                { label: 'Status', value: 'Connected', isStatus: true },
+                                { label: t.settings.gatewayId, value: data?.gateway.gatewayId },
+                                { label: t.settings.firmware, value: data?.gateway.firmwareVersion },
+                                { label: t.settings.status, value: t.settings.connectivity, isStatus: true },
                             ].map(({ label, value, isStatus }) => (
                                 <div key={label} className="flex justify-between text-[11px]">
                                     <span className="text-[var(--text-muted)]">{label}</span>
@@ -81,7 +83,7 @@ export const DeviceConfiguration = () => {
                         <div className="flex items-center gap-2">
                             <Wifi className="w-4 h-4 text-[var(--accent-cyan)]" />
                             <div>
-                                <p className="text-[11px] font-semibold text-[var(--text-secondary)]">Connectivity</p>
+                                <p className="text-[11px] font-semibold text-[var(--text-secondary)]">{t.settings.connectivity}</p>
                                 <p className="text-[10px] text-[var(--status-ok)]">
                                     Connected — {data?.gateway.network}
                                 </p>
@@ -93,7 +95,7 @@ export const DeviceConfiguration = () => {
                     {/* Edit button */}
                     <button className="flex items-center justify-center gap-2 w-full py-2 rounded-lg border border-[var(--bg-border)] text-[11px] text-[var(--text-secondary)] hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)] transition-all">
                         <Edit2 className="w-3.5 h-3.5" />
-                        Edit Configuration
+                        {t.settings.editConfig}
                     </button>
                 </>
             )}

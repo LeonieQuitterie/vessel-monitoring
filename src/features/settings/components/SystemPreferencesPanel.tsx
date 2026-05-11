@@ -1,15 +1,18 @@
 import { Globe, RefreshCw, Languages, Moon } from 'lucide-react'
 import { useSystemPreferences } from '../hooks/useSettings'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
-const prefItems = [
-    { key: 'timezone', label: 'Time Zone', icon: Globe, options: ['UTC (Coordinated Universal Time)', 'GMT+7 (Indochina Time)', 'GMT+8 (Singapore Time)'] },
-    { key: 'dataSyncInterval', label: 'Data Sync Interval', icon: RefreshCw, options: ['30 seconds', '1 minute', '5 minutes', '10 minutes'] },
-    { key: 'language', label: 'Language', icon: Languages, options: ['English (US)', 'Vietnamese', 'Japanese'] },
-    { key: 'theme', label: 'Theme', icon: Moon, options: ['Ocean Dark', 'Deep Space', 'Navy Blue'] },
-]
 
 export const SystemPreferencesPanel = () => {
     const { data: prefs } = useSystemPreferences()
+    const { t } = useTranslation()
+
+    const prefItems = [
+        { key: 'timezone', label: t.settings.timezone, icon: Globe, options: ['UTC (Coordinated Universal Time)', 'GMT+7 (Indochina Time)', 'GMT+8 (Singapore Time)'] },
+        { key: 'dataSyncInterval', label: t.settings.syncInterval, icon: RefreshCw, options: ['30 seconds', '1 minute', '5 minutes', '10 minutes'] },
+        { key: 'language', label: t.settings.language, icon: Languages, options: ['English (US)', 'Vietnamese', 'Japanese'] },
+        { key: 'theme', label: t.settings.theme, icon: Moon, options: ['Ocean Dark', 'Deep Space', 'Navy Blue'] },
+    ]
 
     return (
         <div className="rounded-xl border border-[var(--bg-border)] bg-[var(--bg-card)] p-4 flex flex-col gap-4 h-full">
@@ -17,7 +20,7 @@ export const SystemPreferencesPanel = () => {
             <div className="flex items-center gap-2">
                 <span className="w-5 h-5 rounded flex items-center justify-center bg-[var(--accent-cyan)] bg-opacity-20 text-[10px] font-bold text-[var(--accent-cyan)]">5</span>
                 <h2 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest">
-                    System Preferences
+                    {t.settings.preferences}
                 </h2>
             </div>
 

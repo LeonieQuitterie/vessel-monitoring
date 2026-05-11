@@ -2,6 +2,7 @@ import { ShieldAlert, AlertTriangle, Info, CheckCircle2, ChevronRight } from 'lu
 import { Card } from '@/shared/components/ui/Card'
 import { useRecommendations } from '../hooks/useAnalytics'
 import type { Recommendation } from '../types/analytics.types'
+import { useTranslation } from '@/shared/hooks/useTranslation'
 
 const levelConfig: Record<Recommendation['level'], { color: string; Icon: React.ElementType }> = {
     danger: { color: 'var(--status-danger)', Icon: ShieldAlert },
@@ -12,6 +13,7 @@ const levelConfig: Record<Recommendation['level'], { color: string; Icon: React.
 
 export const AnalyticsRecommendations = () => {
     const { data: recommendations, isLoading } = useRecommendations()
+    const { t, language } = useTranslation()
 
     return (
         <Card className="flex flex-col gap-3">
@@ -21,7 +23,7 @@ export const AnalyticsRecommendations = () => {
                     5
                 </span>
                 <h2 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest">
-                    Recommendations & Insights
+                    {t.analytics.recommendations}
                 </h2>
             </div>
 
@@ -46,10 +48,10 @@ export const AnalyticsRecommendations = () => {
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <p className="text-[11px] font-semibold text-[var(--text-primary)] leading-tight">
-                                        {rec.title}
+                                        {rec.title[language]}
                                     </p>
                                     <p className="text-[10px] text-[var(--text-muted)] mt-0.5 leading-tight truncate">
-                                        {rec.description}
+                                        {rec.description[language]}
                                     </p>
                                 </div>
                                 <ChevronRight className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:text-[var(--text-secondary)] shrink-0" />
@@ -59,7 +61,7 @@ export const AnalyticsRecommendations = () => {
             </div>
 
             <button className="text-[10px] text-[var(--accent-cyan)] hover:underline self-end mt-auto">
-                View all insights →
+                {t.analytics.viewInsights}
             </button>
         </Card>
     )

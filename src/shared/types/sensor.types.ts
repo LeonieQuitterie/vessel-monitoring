@@ -1,5 +1,10 @@
 import type { TimeSeriesPoint } from './common.types'
 
+export interface LocalizedString {
+  en: string
+  vi: string
+}
+
 export interface SensorReading {
   temperature: number
   vibration: number
@@ -10,7 +15,7 @@ export interface SensorReading {
 
 export interface SensorCard {
   id: string
-  label: string
+  label: LocalizedString
   value: number
   unit: string
   normalMin: number
@@ -22,7 +27,7 @@ export interface SensorCard {
 export interface SystemEvent {
   id: string
   timestamp: string
-  message: string
+  message: LocalizedString
   source: string
   category: 'system' | 'engine' | 'connectivity' | 'sensor'
 }

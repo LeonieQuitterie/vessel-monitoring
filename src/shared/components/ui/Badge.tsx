@@ -22,6 +22,11 @@ const variantStyles: Record<BadgeVariant, string> = {
 export const Badge = ({ label, variant = 'muted', dot = true, className }: BadgeProps) => {
     return (
         <span
+            // clsx gộp 3 nhóm class
+            // Cố định
+            // Class thay đổi theo biến
+            // Class từ bên ngoài truyền thêm   
+            
             className={clsx(
                 'inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-[10px] font-medium tracking-wide',
                 variantStyles[variant],
